@@ -1,7 +1,8 @@
-FROM python:3.9-slim-buster
+FROM python:3.9.6-alpine3.14
 ENV PYTHONUNBUFFERED=1
+
 WORKDIR /django
 
 COPY requirements.txt requirements.txt
+RUN pip install --upgrade pip
 RUN pip3 install -r requirements.txt
-
