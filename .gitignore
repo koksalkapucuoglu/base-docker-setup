@@ -176,3 +176,6 @@ cython_debug/
 /commands.txt
 /Notes.txt
 /data/
+/db-store
+/db
+/db/
