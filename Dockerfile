@@ -1,5 +1,6 @@
-FROM python:3.9.6-alpine3.14
+FROM python:3.9-alpine
 ENV PYTHONUNBUFFERED=1
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 
 WORKDIR /django
 
