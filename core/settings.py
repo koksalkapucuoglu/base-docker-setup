@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'newapp'
 ]
 
+INSTALLED_APPS += [
+    'django_celery_results',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -126,4 +130,7 @@ STATIC_URL = '/static/'
 
 
 CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+#CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+# use django-celery-results, which stores results in the database
+CELERY_RESULT_BACKEND = 'django-db' 
