@@ -10,7 +10,7 @@ def run_add_task(modeladmin, request, queryset):
     The add task will calculate the sum of number1 and number2 and store it in result.
     """
     for obj in queryset:
-        add.delay(obj.id)
+        add.delay(str(obj.id))
 
 @admin.register(NumberPair)
 class NumberPairAdmin(admin.ModelAdmin):

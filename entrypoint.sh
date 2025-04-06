@@ -2,15 +2,15 @@
 
 set -e
 
-host="$POSTGRES_HOST"
-port="$POSTGRES_PORT"
+host="$MONGO_HOST"
+port="$MONGO_PORT"
 
-echo "Waiting for database at $host:$port..."
+echo "Waiting for MongoDB at $host:$port..."
 
 while ! nc -z "$host" "$port"; do
   sleep 1
 done
 
-echo "Database is ready!"
+echo "MongoDB is ready!"
 
 exec "$@"

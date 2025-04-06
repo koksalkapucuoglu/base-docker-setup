@@ -7,15 +7,18 @@ services:
     container_name: redis_base
 
   db:
-    image: postgres
+    image: mongo:latest
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/mongo:/data/db
+    container_name: mongo_db_base
+    ports:
+      - 27018:27017 # If you have another mongo instance running on 27017, use another port like 27018. This port is for the outside world. 
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-    container_name: postgres_db_base
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_INITDB_DATABASE}
+      - MONGO_USER=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
 
   app:
     build: .
@@ -29,11 +32,13 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_HOST=${POSTGRES_HOST} # this matched the db service name
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_NAME=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST} # this matched the db service name
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_INITDB_DATABASE}
+      - MONGO_USER=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_URI=${MONGO_URI}
+    entrypoint: ./entrypoint.sh
 
   celery:
     restart: always
@@ -48,8 +53,10 @@ services:
       - redis
       - app
     environment:
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_NAME=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_INITDB_DATABASE}
+      - MONGO_USER=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_URI=${MONGO_URI}
+    entrypoint: ./entrypoint.sh # sure "chmod +x entrypoint.sh"
