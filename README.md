@@ -42,3 +42,4 @@ This project is a Django application integrated with Celery for task management.
 ## Notes
 - Ensure the database and Redis configurations match your environment if you are working with virtual enviroment.
 - Use the Django admin panel to manage `NumberPair` objects and trigger Celery tasks.
+- For PostgreSQL, MySQL, and MongoDB setups, check the other branches in this repository.
